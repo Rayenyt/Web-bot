@@ -5,105 +5,199 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Free Fire API Dashboard - Rayen</title>
 <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif}
-    body{
-        background:radial-gradient(circle at 20% 20%,#0f0f1a,#000);
-        color:#fff;
-        overflow-x:hidden;
-        min-height:100vh;
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        justify-content:flex-start;
-    }
-    header{
-        width:100%;
-        text-align:center;
-        padding:25px;
-        background:rgba(255,255,255,0.05);
-        backdrop-filter:blur(10px);
-        box-shadow:0 0 15px rgba(0,0,0,0.5);
-    }
-    header h1{
-        font-size:2em;
-        color:#00eaff;
-        text-shadow:0 0 10px #00eaff;
-        letter-spacing:2px;
-    }
-    .container{
-        display:flex;
-        flex-wrap:wrap;
-        justify-content:center;
-        gap:25px;
-        padding:40px;
-    }
-    .api-card{
-        width:320px;
-        background:rgba(255,255,255,0.08);
-        border:1px solid rgba(255,255,255,0.2);
-        border-radius:20px;
-        padding:20px;
-        box-shadow:0 0 15px rgba(0,0,0,0.4);
-        transition:0.3s ease-in-out;
-        overflow:hidden;
-        position:relative;
-    }
-    .api-card:hover{transform:scale(1.05);box-shadow:0 0 25px #00eaff}
-    .api-card h2{color:#00eaff;margin-bottom:15px;text-align:center}
-    .api-card input,.api-card select{
-        width:100%;
-        padding:8px 10px;
-        margin-bottom:10px;
-        border-radius:8px;
-        border:none;
-        outline:none;
-        background:rgba(0,0,0,0.4);
-        color:#fff;
-        font-size:0.9em;
-    }
-    .api-card button{
-        width:100%;
-        padding:10px;
-        background:#00eaff;
-        border:none;
-        color:#000;
-        border-radius:8px;
-        font-weight:bold;
-        cursor:pointer;
-        transition:0.3s;
-    }
-    .api-card button:hover{background:#00ffcc;transform:scale(1.03)}
-    .result{
-        margin-top:15px;
-        background:rgba(0,0,0,0.4);
-        padding:10px;
-        border-radius:10px;
-        font-size:0.85em;
-        max-height:150px;
-        overflow-y:auto;
-        white-space:pre-wrap;
-    }
-    footer{text-align:center;padding:20px;font-size:0.9em;color:#aaa}
-    /* moving neon background */
-    @keyframes move-bg{0%{background-position:0 0}100%{background-position:400% 0}}
-    body::before{
-        content:"";position:fixed;top:0;left:0;width:100%;height:100%;
-        background:linear-gradient(270deg,#00eaff,#ff00ff,#00ffcc,#0066ff);
-        background-size:400% 400%;z-index:-1;opacity:.05;
-        animation:move-bg 10s linear infinite;
-    }
-    /* gallery for event images */
-    .gallery{
-        display:grid;
-        grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
-        gap:10px;
-        margin-top:10px;
-    }
-    .gallery img{
-        width:100%;border-radius:10px;
-        transition:transform 0.3s, box-shadow 0.3s;
-        cursor:pointer;
-    }
+/* ====================== Base ====================== */
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif}
+body{background:radial-gradient(circle at 20% 20%,#0f0f1a,#000);color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-x:hidden;}
+header{width:100%;text-align:center;padding:25px;background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);box-shadow:0 0 15px rgba(0,0,0,0.5);}
+header h1{font-size:2em;color:#00eaff;text-shadow:0 0 15px #00eaff;letter-spacing:2px;animation:neonPulse 2s infinite;}
+@keyframes neonPulse{0%,100%{text-shadow:0 0 5px #00eaff,0 0 20px #00eaff,0 0 30px #00eaff}50%{text-shadow:0 0 10px #00ffcc,0 0 25px #00ffcc,0 0 40px #00ffcc}}
+.container{display:flex;flex-wrap:wrap;justify-content:center;gap:25px;padding:40px;max-width:1200px;}
+.api-card{width:320px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:20px;box-shadow:0 0 10px rgba(0,255,255,0.3);transition:0.3s ease-in-out;overflow:hidden;position:relative;}
+.api-card:hover{transform:scale(1.05);box-shadow:0 0 25px #00eaff,0 0 50px #00ffcc;}
+.api-card h2{color:#00eaff;margin-bottom:15px;text-align:center;text-shadow:0 0 5px #00eaff;}
+.api-card input,.api-card select{width:100%;padding:8px 10px;margin-bottom:10px;border-radius:8px;border:none;outline:none;background:rgba(0,0,0,0.4);color:#fff;font-size:0.9em;}
+.api-card button{width:100%;padding:10px;background:#00eaff;border:none;color:#000;border-radius:8px;font-weight:bold;cursor:pointer;transition:0.3s;box-shadow:0 0 5px #00eaff;}
+.api-card button:hover{background:#00ffcc;transform:scale(1.05);box-shadow:0 0 15px #00ffcc;}
+.result{margin-top:15px;background:rgba(0,0,0,0.3);padding:10px;border-radius:10px;font-size:0.85em;max-height:200px;overflow-y:auto;white-space:pre-wrap;box-shadow:0 0 10px #00eaff inset;}
+footer{text-align:center;padding:20px;font-size:0.9em;color:#aaa;}
+
+/* Background animation */
+@keyframes move-bg{0%{background-position:0 0}100%{background-position:400% 0}}
+body::before{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(270deg,#00eaff,#ff00ff,#00ffcc,#0066ff);background-size:400% 400%;z-index:-1;opacity:.05;animation:move-bg 15s linear infinite;}
+
+/* gallery for images */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;margin-top:10px;}
+.gallery img{width:100%;border-radius:10px;transition:transform 0.3s, box-shadow 0.3s;cursor:pointer;}
+.gallery img:hover{transform:scale(1.1);box-shadow:0 0 20px #00eaff;}
+
+/* Modal */
+.modal{display:none;position:fixed;z-index:999;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.9);}
+.modal-content{margin:10% auto;padding:20px;width:90%;max-width:700px;background:rgba(0,0,0,0.95);border-radius:15px;}
+.modal-content img{width:100%;border-radius:15px;}
+.close{color:#fff;float:right;font-size:28px;font-weight:bold;cursor:pointer;}
+.close:hover{color:#00eaff;}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Free Fire API Dashboard ⚡</h1>
+</header>
+
+<div class="container">
+    <!-- INFO -->
+    <div class="api-card">
+        <h2>🔍 Player Info</h2>
+        <input id="info_id" placeholder="Enter Player ID">
+        <button onclick="callAPI('info')">Get Info</button>
+        <div id="info_result" class="result"></div>
+    </div>
+
+    <!-- LIKE -->
+    <div class="api-card">
+        <h2>❤️ Likes</h2>
+        <input id="like_id" placeholder="Enter Player ID">
+        <button onclick="callAPI('like')">Get Likes</button>
+        <div id="like_result" class="result"></div>
+    </div>
+
+    <!-- BIO -->
+    <div class="api-card">
+        <h2>🧬 Bio Update</h2>
+        <input id="bio_token" placeholder="Access Token">
+        <input id="bio_text" placeholder="Bio Text">
+        <input id="bio_people" placeholder="People (comma separated)">
+        <button onclick="callAPI('bio')">Send Bio</button>
+        <div id="bio_result" class="result"></div>
+    </div>
+
+    <!-- DANCE -->
+    <div class="api-card">
+        <h2>💃 Dance Action</h2>
+        <input id="dance_team" placeholder="Team Code">
+        <input id="dance_ids" placeholder="Dance IDs (comma separated)">
+        <button onclick="callAPI('dance')">Perform Dances</button>
+        <div id="dance_result" class="result"></div>
+    </div>
+
+    <!-- BAN -->
+    <div class="api-card">
+        <h2>🚫 Ban Check</h2>
+        <input id="ban_uid" placeholder="Enter Player UID">
+        <button onclick="callAPI('ban')">Check Ban</button>
+        <div id="ban_result" class="result"></div>
+    </div>
+
+    <!-- OUTFIT -->
+    <div class="api-card">
+        <h2>👕 Outfit</h2>
+        <input id="outfit_uid" placeholder="Enter Player UID">
+        <button onclick="callAPI('outfit')">Show Outfit</button>
+        <div id="outfit_result" class="result"></div>
+    </div>
+
+    <!-- BNR -->
+    <div class="api-card">
+        <h2>🎖️ Banner (BNR)</h2>
+        <input id="bnr_uid" placeholder="Enter Player UID">
+        <button onclick="callAPI('bnr')">Show Banner</button>
+        <div id="bnr_result" class="result"></div>
+    </div>
+
+    <!-- EVENT -->
+    <div class="api-card">
+        <h2>🎉 Events by Server</h2>
+        <select id="event_server">
+            <option value="ME">MENA</option>
+            <option value="EU">EU</option>
+            <option value="ASIA">ASIA</option>
+            <option value="BR">Brazil</option>
+            <option value="NA">North America</option>
+        </select>
+        <button onclick="callAPI('event')">Show Events</button>
+        <div id="event_result" class="result"></div>
+    </div>
+</div>
+
+<footer>© 2025 Rayen | Free Fire API Dashboard</footer>
+
+<!-- Modal for images -->
+<div id="modal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="modal-content" id="modal-content"></div>
+</div>
+
+<script>
+const apis = {
+    info: "https://x7m-xinfo.vercel.app/xInFo?id=",
+    like: "https://ff.mlbbai.com/like/",
+    bio: "https://s1x-amin-bio.vercel.app/get",
+    dance: "https://ctx-team-1-production.up.railway.app/api/dance",
+    ban: "https://s1x-amin-check.vercel.app/check?uid=",
+    outfit: "https://lonely-outfit-7ffo.vercel.app/outfit?uid=",
+    bnr: "http://212.227.65.132:13521/bnr?uid=",
+    event: "https://testing-site-self.vercel.app/events"
+};
+
+// Modal functions
+function openModal(imgUrl){
+    document.getElementById('modal-content').innerHTML = `<img src="${imgUrl}" alt="image">`;
+    document.getElementById('modal').style.display = "block";
+}
+function closeModal(){ document.getElementById('modal').style.display = "none"; }
+
+async function callAPI(type){
+    const resultBox = document.getElementById(`${type}_result`);
+    resultBox.textContent = "⏳ Loading...";
+
+    try{
+        let res;
+        if(type==="bio"){
+            const token=document.getElementById("bio_token").value.trim();
+            const text=document.getElementById("bio_text").value.trim();
+            const people=document.getElementById("bio_people").value.trim();
+            const form=new FormData();
+            form.append("access_token",token);
+            form.append("bio_text",text);
+            form.append("bio_people",people);
+            res=await fetch(apis.bio,{method:"POST",body:form});
+            const data=await res.json();
+            resultBox.textContent=JSON.stringify(data,null,2);
+        }else if(type==="dance"){
+            const team=document.getElementById("dance_team").value.trim();
+            const ids=document.getElementById("dance_ids").value.trim();
+            const form=new FormData();
+            form.append("team_code",team);
+            form.append("dance_ids",ids);
+            res=await fetch(apis.dance,{method:"POST",body:form});
+            const data=await res.json();
+            resultBox.textContent=JSON.stringify(data,null,2);
+        }else if(type==="event"){
+            const server=document.getElementById("event_server").value;
+            res=await fetch(`${apis.event}?server=${server}`);
+            const text=await res.text();
+            const urls=[...text.matchAll(/https?:\/\/[^\s"']+\.(?:jpg|png|jpeg|gif)/g)].map(m=>m[0]);
+            if(urls.length){
+                resultBox.innerHTML='<div class="gallery">'+urls.map(u=>`<img src="${u}" onclick="openModal('${u}')" />`).join('')+'</div>';
+            } else { resultBox.textContent="⚠️ No event images found for "+server; }
+        }else if(type==="outfit"||type==="bnr"){
+            const input=document.getElementById(`${type}_uid`).value.trim();
+            res=await fetch(apis[type]+input);
+            const imgUrl=await res.text();
+            resultBox.innerHTML=`<img src="${imgUrl}" style="width:100%;border-radius:10px;" onclick="openModal('${imgUrl}')"/>`;
+        }else{
+            const input=document.getElementById(`${type}_id`)||document.getElementById(`${type}_uid`);
+            const value=input?input.value.trim():"";
+            res=await fetch(apis[type]+value);
+            const data=await res.json();
+            resultBox.textContent=JSON.stringify(data,null,2);
+        }
+    }catch(err){ resultBox.textContent="❌ Error: "+err.message; }
+}
+</script>
+
+</body>
+</html>    }
     .gallery img:hover{
         transform:scale(1.1);
         box-shadow:0 0 20px #00eaff;
