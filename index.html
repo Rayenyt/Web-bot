@@ -121,7 +121,6 @@ body::before{content:"";position:fixed;top:0;left:0;width:100%;height:100%;backg
 
 <footer>© 2025 Rayen | Free Fire API Dashboard</footer>
 
-<!-- Modal for images -->
 <div id="modal" class="modal">
     <span class="close" onclick="closeModal()">&times;</span>
     <div class="modal-content" id="modal-content"></div>
@@ -139,17 +138,12 @@ const apis = {
     event: "https://testing-site-self.vercel.app/events"
 };
 
-// Modal functions
-function openModal(imgUrl){
-    document.getElementById('modal-content').innerHTML = `<img src="${imgUrl}" alt="image">`;
-    document.getElementById('modal').style.display = "block";
-}
-function closeModal(){ document.getElementById('modal').style.display = "none"; }
+function openModal(imgUrl){document.getElementById('modal-content').innerHTML=`<img src="${imgUrl}" alt="image">`;document.getElementById('modal').style.display="block";}
+function closeModal(){document.getElementById('modal').style.display="none";}
 
 async function callAPI(type){
-    const resultBox = document.getElementById(`${type}_result`);
-    resultBox.textContent = "⏳ Loading...";
-
+    const resultBox=document.getElementById(`${type}_result`);
+    resultBox.textContent="⏳ Loading...";
     try{
         let res;
         if(type==="bio"){
@@ -177,9 +171,8 @@ async function callAPI(type){
             res=await fetch(`${apis.event}?server=${server}`);
             const text=await res.text();
             const urls=[...text.matchAll(/https?:\/\/[^\s"']+\.(?:jpg|png|jpeg|gif)/g)].map(m=>m[0]);
-            if(urls.length){
-                resultBox.innerHTML='<div class="gallery">'+urls.map(u=>`<img src="${u}" onclick="openModal('${u}')" />`).join('')+'</div>';
-            } else { resultBox.textContent="⚠️ No event images found for "+server; }
+            if(urls.length){resultBox.innerHTML='<div class="gallery">'+urls.map(u=>`<img src="${u}" onclick="openModal(\'${u}\')" />`).join('')+'</div>';}
+            else{resultBox.textContent="⚠️ No event images found for "+server;}
         }else if(type==="outfit"||type==="bnr"){
             const input=document.getElementById(`${type}_uid`).value.trim();
             res=await fetch(apis[type]+input);
@@ -192,315 +185,9 @@ async function callAPI(type){
             const data=await res.json();
             resultBox.textContent=JSON.stringify(data,null,2);
         }
-    }catch(err){ resultBox.textContent="❌ Error: "+err.message; }
+    }catch(err){resultBox.textContent="❌ Error: "+err.message;}
 }
 </script>
 
 </body>
-</html>    }
-    .gallery img:hover{
-        transform:scale(1.1);
-        box-shadow:0 0 20px #00eaff;
-    }
-</style>
-</head>
-<body>
-
-<header>
-    <h1>Free Fire API Dashboard ⚡</h1>
-</header>
-
-<div class="container">
-
-    <!-- INFO -->
-    <div class="api-card">
-        <h2>🔍 Player Info</h2>
-        <input id="info_id" placeholder="Enter Player ID">
-        <button onclick="callAPI('info')">Get Info</button>
-        <div id="info_result" class="result"></div>
-    </div>
-
-    <!-- LIKE -->
-    <div class="api-card">
-        <h2>❤️ Likes</h2>
-        <input id="like_id" placeholder="Enter Player ID">
-        <button onclick="callAPI('like')">Get Likes</button>
-        <div id="like_result" class="result"></div>
-    </div>
-
-    <!-- BIO -->
-    <div class="api-card">
-        <h2>🧬 Bio Update</h2>
-        <input id="bio_token" placeholder="Access Token">
-        <input id="bio_text" placeholder="Bio Text">
-        <input id="bio_people" placeholder="People (comma separated)">
-        <button onclick="callAPI('bio')">Send Bio</button>
-        <div id="bio_result" class="result"></div>
-    </div>
-
-    <!-- DANCE -->
-    <div class="api-card">
-        <h2>💃 Dance Action</h2>
-        <input id="dance_team" placeholder="Team Code">
-        <input id="dance_ids" placeholder="Dance IDs (comma separated)">
-        <button onclick="callAPI('dance')">Perform Dances</button>
-        <div id="dance_result" class="result"></div>
-    </div>
-
-    <!-- BAN -->
-    <div class="api-card">
-        <h2>🚫 Ban Check</h2>
-        <input id="ban_uid" placeholder="Enter Player UID">
-        <button onclick="callAPI('ban')">Check Ban</button>
-        <div id="ban_result" class="result"></div>
-    </div>
-
-    <!-- EVENT -->
-    <div class="api-card">
-        <h2>🎉 Events by Server</h2>
-        <select id="event_server">
-            <option value="MENA">MENA</option>
-            <option value="EU">EU</option>
-            <option value="ASIA">ASIA</option>
-            <option value="BR">Brazil</option>
-            <option value="NA">North America</option>
-        </select>
-        <button onclick="callAPI('event')">Show Events</button>
-        <div id="event_result" class="result"></div>
-    </div>
-
-</div>
-
-<footer>
-    © 2025 Rayen | Free Fire API Dashboard
-</footer>
-
-<script>
-const apis = {
-    info: "https://x7m-xinfo.vercel.app/xInFo?id=",
-    like: "https://ff.mlbbai.com/like/",
-    bio: "https://s1x-amin-bio.vercel.app/get",
-    dance: "https://ctx-team-1-production.up.railway.app/api/dance",
-    ban: "https://s1x-amin-check.vercel.app/check?uid=",
-    event: "https://testing-site-self.vercel.app/events"
-};
-
-async function callAPI(type) {
-    const resultBox = document.getElementById(`${type}_result`);
-    resultBox.textContent = "⏳ Loading...";
-
-    try {
-        let res;
-        if (type === "bio") {
-            const token = document.getElementById("bio_token").value.trim();
-            const text = document.getElementById("bio_text").value.trim();
-            const people = document.getElementById("bio_people").value.trim();
-            const form = new FormData();
-            form.append("access_token", token);
-            form.append("bio_text", text);
-            form.append("bio_people", people);
-            res = await fetch(apis.bio, { method: "POST", body: form });
-            const data = await res.json();
-            resultBox.textContent = JSON.stringify(data, null, 2);
-        } 
-        else if (type === "dance") {
-            const team = document.getElementById("dance_team").value.trim();
-            const ids = document.getElementById("dance_ids").value.trim();
-            const form = new FormData();
-            form.append("team_code", team);
-            form.append("dance_ids", ids);
-            res = await fetch(apis.dance, { method: "POST", body: form });
-            const data = await res.json();
-            resultBox.textContent = JSON.stringify(data, null, 2);
-        } 
-        else if (type === "event") {
-            const server = document.getElementById("event_server").value;
-            res = await fetch(`${apis.event}?server=${server}`);
-            const text = await res.text();
-
-            // محاولة اكتشاف إذا المحتوى يحتوي صور أو JSON
-            if (text.includes("http") && (text.includes(".jpg") || text.includes(".png"))) {
-                // استخراج الصور وعرضها كمعرض
-                const urls = [...text.matchAll(/https?:\/\/[^\s"']+\.(?:jpg|png|jpeg|gif)/g)].map(m=>m[0]);
-                if(urls.length){
-                    resultBox.innerHTML = '<div class="gallery">' + urls.map(u=>`<img src="${u}" alt="event">`).join('') + '</div>';
-                } else {
-                    resultBox.textContent = "⚠️ No event images found for " + server;
-                }
-            } else {
-                try {
-                    const data = JSON.parse(text);
-                    resultBox.textContent = JSON.stringify(data, null, 2);
-                } catch {
-                    resultBox.textContent = text;
-                }
-            }
-        } 
-        else {
-            let input = document.getElementById(`${type}_id`) || document.getElementById(`${type}_uid`);
-            const value = input ? input.value.trim() : "";
-            res = await fetch(apis[type] + value);
-            const data = await res.json();
-            resultBox.textContent = JSON.stringify(data, null, 2);
-        }
-
-    } catch (err) {
-        resultBox.textContent = "❌ Error: " + err.message;
-    }
-}
-</script>
-
-</body>
-</html>  color: #00ffff;
-  margin-bottom: 20px;
-  text-shadow: 0 0 10px #00ffff;
-}
-input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  margin: 10px 0;
-  font-size: 16px;
-  background: rgba(255,255,255,0.1);
-  color: #fff;
-}
-button {
-  padding: 10px 25px;
-  border-radius: 10px;
-  border: none;
-  background: #00ffff;
-  color: #000;
-  font-weight: bold;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-button:hover {
-  box-shadow: 0 0 20px #00ffff;
-}
-.result {
-  margin-top: 20px;
-  text-align: left;
-  background: rgba(255,255,255,0.07);
-  padding: 15px;
-  border-radius: 10px;
-  font-size: 14px;
-  overflow-y: auto;
-  max-height: 250px;
-}
-footer {
-  position: absolute;
-  bottom: 10px;
-  text-align: center;
-  width: 100%;
-  font-size: 14px;
-  color: #aaa;
-}
-</style>
-</head>
-<body>
-<canvas id="bg"></canvas>
-<header>⚡ Free Fire API Dashboard ⚡</header>
-
-<div class="container">
-  <div class="btn" onclick="openModal('like')">❤️ Like API</div>
-  <div class="btn" onclick="openModal('info')">📜 Info API</div>
-  <div class="btn" onclick="openModal('bio')">👤 Bio API</div>
-  <div class="btn" onclick="openModal('outfit')">🧥 Outfit API</div>
-  <div class="btn" onclick="openModal('bnr')">🏴 BNR API</div>
-  <div class="btn" onclick="openModal('ban')">🚫 Ban Check</div>
-  <div class="btn" onclick="openModal('dance')">💃 Dance API</div>
-  <div class="btn" onclick="openModal('event')">🎉 Events API</div>
-</div>
-
-<!-- نافذة API -->
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <h2 id="modal-title">API</h2>
-    <input type="text" id="input-field" placeholder="أدخل UID أو القيمة المطلوبة">
-    <button onclick="fetchData()">عرض النتيجة</button>
-    <div id="result" class="result"></div>
-  </div>
-</div>
-
-<footer>© 2025 Designed by Rayen ✨</footer>
-
-<script>
-// الروابط
-const apis = {
-  like: "https://ff.mlbbai.com/like/",
-  info: "https://x7m-xinfo.vercel.app/xInFo",
-  bio: "https://s1x-amin-bio.vercel.app/get",
-  outfit: "https://lonely-outfit-7ffo.vercel.app/outfit",
-  bnr: "http://212.227.65.132:13521/bnr?uid={uid}&key=AlliFF_BOT_V1",
-  ban: "https://s1x-amin-check.vercel.app/check",
-  dance: "https://ctx-team-1-production.up.railway.app/api/dance",
-  event: "https://testing-site-self.vercel.app/events"
-};
-let currentApi = "";
-
-function openModal(api){
-  currentApi = api;
-  document.getElementById("modal").style.display = "flex";
-  document.getElementById("modal-title").innerText = api.toUpperCase() + " API";
-  document.getElementById("result").innerHTML = "";
-  document.getElementById("input-field").value = "";
-}
-function closeModal(){
-  document.getElementById("modal").style.display = "none";
-}
-window.onclick = e => { if(e.target.id === "modal") closeModal(); };
-
-async function fetchData(){
-  const uid = document.getElementById("input-field").value.trim();
-  const resultBox = document.getElementById("result");
-  if(!uid){ resultBox.innerHTML = "<b>⚠️ الرجاء إدخال قيمة أولا</b>"; return; }
-  resultBox.innerHTML = "⏳ جاري الجلب...";
-  let url = apis[currentApi];
-  if(url.includes("{uid}")) url = url.replace("{uid}", uid);
-  try {
-    const res = await fetch(url + (url.includes("?") ? "&" : "?") + "uid=" + uid);
-    const text = await res.text();
-    resultBox.innerHTML = `<pre>${text}</pre>`;
-  } catch {
-    resultBox.innerHTML = "❌ حدث خطأ أثناء الجلب";
-  }
-}
-
-/* Particles Animation */
-const canvas = document.getElementById('bg');
-const ctx = canvas.getContext('2d');
-let w,h,particles;
-function resize(){
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-  particles = Array(100).fill().map(()=>({
-    x: Math.random()*w,
-    y: Math.random()*h,
-    r: Math.random()*2+1,
-    dx: (Math.random()-0.5)*1,
-    dy: (Math.random()-0.5)*1,
-  }));
-}
-window.onresize = resize; resize();
-
-function draw(){
-  ctx.clearRect(0,0,w,h);
-  ctx.fillStyle = "#00ffff55";
-  particles.forEach(p=>{
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fill();
-    p.x += p.dx; p.y += p.dy;
-    if(p.x<0||p.x>w) p.dx*=-1;
-    if(p.y<0||p.y>h) p.dy*=-1;
-  });
-  requestAnimationFrame(draw);
-}
-draw();
-</script>
-</body>
-</html>
+    </html>
