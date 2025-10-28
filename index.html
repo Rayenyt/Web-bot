@@ -3,107 +3,123 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free Fire API Dashboard</title>
-
+<title>FF API Dashboard - Pro Panel</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap');
+*{box-sizing:border-box;font-family:'Cairo',sans-serif;direction:rtl;margin:0;padding:0;}
+body{background:linear-gradient(135deg,#020024,#090979,#00d4ff);min-height:100vh;display:flex;justify-content:center;align-items:center;color:#fff;}
+.container{width:90%;max-width:650px;background:rgba(255,255,255,0.1);backdrop-filter:blur(15px);padding:30px;border-radius:20px;box-shadow:0 0 25px rgba(0,0,0,0.3);}
+h1{text-align:center;color:#00ffff;text-shadow:0 0 15px #00ffff;margin-bottom:20px;}
+select,input,button{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:none;font-size:16px;outline:none;}
+input{background:rgba(255,255,255,0.9);color:#000;}
+select{background:rgba(0,0,0,0.4);color:#fff;}
+button{background:linear-gradient(90deg,#00ffff,#0080ff);color:#000;font-weight:bold;cursor:pointer;transition:.3s;}
+button:hover{transform:scale(1.05);background:linear-gradient(90deg,#00c3ff,#00ffb3);}
+.chat{margin-top:15px;max-height:500px;overflow-y:auto;display:flex;flex-direction:column;}
+.message{padding:10px 15px;border-radius:15px;margin:8px 0;display:inline-block;max-width:85%;animation:fadeIn 0.5s ease;word-break:break-word;}
+.user{background:rgba(0,255,255,0.2);align-self:flex-end;}
+.bot{background:rgba(255,255,255,0.2);align-self:flex-start;}
+.card{background:rgba(0,0,0,0.4);padding:12px 15px;border-radius:12px;margin-top:5px;animation:fadeSlide 0.6s ease;box-shadow:0 0 15px rgba(0,255,255,0.2);}
+.card h3{margin-bottom:5px;color:#00ffff;}
+.card p{margin:2px 0;color:#00ff99;}
+img{max-width:100%;border-radius:15px;margin-top:8px;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeSlide{from{opacity:0;transform:translateX(-20px);}to{opacity:1;transform:translateX(0);}}
+.audio{display:none;}
+.footer{margin-top:20px;text-align:center;opacity:.8;font-size:13px;}
+</style>
+</head>
+<body>
 
-* {
-  box-sizing: border-box;
-  font-family: 'Cairo', sans-serif;
-  direction: rtl;
+<div class="container">
+<h1>🎯 FF API Dashboard</h1>
+<select id="apiType">
+  <option value="like">❤️ Like API</option>
+  <option value="info">🧠 Info API</option>
+  <option value="bio">📜 Bio API</option>
+  <option value="outfit">🧢 Outfit API</option>
+  <option value="bnr">🚫 BNR API</option>
+  <option value="ban">🔒 Ban API</option>
+  <option value="dance">💃 Dance API</option>
+  <option value="event">🎉 Event API</option>
+</select>
+<input type="text" id="uid" placeholder="أدخل UID أو البيانات المطلوبة">
+<button onclick="sendRequest()">🚀 إرسال الطلب</button>
+
+<div class="chat" id="chat"></div>
+<audio id="sendSound" class="audio" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+
+<div class="footer">Developed by Rayen YT © 2025</div>
+</div>
+
+<script>
+const APIs = {
+  like:   "https://ff.mlbbai.com/like/",
+  info:   "https://x7m-xinfo.vercel.app/xInFo",
+  bio:    "https://s1x-amin-bio.vercel.app/get",
+  outfit: "https://lonely-outfit-7ffo.vercel.app/outfit",
+  bnr:    "http://212.227.65.132:13521/bnr?uid={uid}&key=AlliFF_BOT_V1",
+  ban:    "https://s1x-amin-check.vercel.app/check",
+  dance:  "https://ctx-team-1-production.up.railway.app/api/dance",
+  event:  "https://testing-site-self.vercel.app/events"
+};
+const PROXY = "https://api.allorigins.win/get?url=";
+
+function addMessage(content,sender='bot',isHTML=false){
+  const chat=document.getElementById('chat');
+  const msg=document.createElement('div');
+  msg.className='message '+sender;
+  if(isHTML){msg.innerHTML=content;}else{msg.textContent=content;}
+  chat.appendChild(msg);
+  chat.scrollTop=chat.scrollHeight;
 }
 
-body {
-  background: linear-gradient(135deg, #020024, #090979, #00d4ff);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  margin: 0;
+function createCard(title,data){
+  let html=`<div class="card"><h3>${title}</h3>`;
+  for(const key in data){
+    html+=`<p><b>${key}:</b> ${data[key]}</p>`;
+  }
+  html+='</div>';
+  return html;
 }
 
-.container {
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(15px);
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 0 25px rgba(0,0,0,0.3);
-  width: 90%;
-  max-width: 550px;
-  animation: fadeIn 1s ease-in-out;
-}
+async function sendRequest(){
+  const type=document.getElementById('apiType').value;
+  const uid=document.getElementById('uid').value.trim();
+  const sound=document.getElementById('sendSound');
+  if(!uid && type!=='event'){addMessage('⚠️ الرجاء إدخال UID أو البيانات المطلوبة','bot');return;}
+  addMessage(uid,'user');sound.play();
 
-@keyframes fadeIn {
-  from {opacity: 0; transform: translateY(30px);}
-  to {opacity: 1; transform: translateY(0);}
-}
+  let url=APIs[type];
+  if(url.includes('{uid}')) url=url.replace('{uid}',uid);
+  if(type==='like') url += '?uid='+uid;
+  if(type==='dance') url += '?teamcode='+uid;
+  if(type==='bio') url += '?access_token='+uid;
+  if(type==='info'||type==='ban') url += '?uid='+uid;
 
-h1 {
-  text-align: center;
-  color: #00ffff;
-  text-shadow: 0 0 15px #00ffff;
-  margin-bottom: 25px;
-}
+  const isImageResponse=['bnr','outfit','event'].includes(type);
 
-select, input {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  outline: none;
+  try{
+    if(isImageResponse){
+      const res=await fetch(url);
+      const blob=await res.blob();
+      const imgURL=URL.createObjectURL(blob);
+      addMessage('<img src="'+imgURL+'">','bot',true);
+      return;
+    }
+    const res=await fetch(PROXY + encodeURIComponent(url));
+    const data=await res.json();
+    const parsed=data.contents?JSON.parse(data.contents):data;
+    const card=createCard(type.toUpperCase(),parsed);
+    addMessage(card,'bot',true);
+  }catch(e){
+    addMessage('❌ خطأ في الاتصال: '+e.message,'bot');
+  }
 }
+</script>
 
-input {
-  background: rgba(255,255,255,0.9);
-  color: #000;
-}
-
-select {
-  background: rgba(0,0,0,0.4);
-  color: #fff;
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  background: linear-gradient(90deg, #00ffff, #0080ff);
-  color: #000;
-  font-weight: bold;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-  font-size: 16px;
-}
-
-button:hover {
-  transform: scale(1.05);
-  background: linear-gradient(90deg, #00c3ff, #00ffb3);
-}
-
-.result {
-  background: rgba(0,0,0,0.4);
-  border-radius: 15px;
-  padding: 20px;
-  margin-top: 15px;
-  white-space: pre-wrap;
-  font-size: 14px;
-  line-height: 1.6;
-  max-height: 400px;
-  overflow-y: auto;
-  color: #00ffcc;
-}
-
-.footer {
-  margin-top: 20px;
-  opacity: 0.8;
-  font-size: 13px;
-  text-align: center;
+</body>
+</html>  text-align: center;
 }
 </style>
 </head>
