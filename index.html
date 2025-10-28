@@ -15,36 +15,45 @@ body{
   align-items:flex-start;
   color:#fff;
   padding:20px;
+  overflow-x:hidden;
 }
 .container{
   width:100%;
-  max-width:1000px;
-  background:rgba(255,255,255,0.1);
+  max-width:1200px;
+  background:rgba(255,255,255,0.05);
   backdrop-filter:blur(15px);
   padding:30px;
   border-radius:20px;
   box-shadow:0 0 50px rgba(0,0,0,0.5);
+  animation:fadeIn 1s ease;
 }
 h1{
   text-align:center;
   color:#00ffff;
   text-shadow:0 0 25px #00ffff;
   margin-bottom:25px;
+  animation:fadeUp 1s ease;
+}
+.grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
+  gap:20px;
 }
 .api-section{
-  margin-bottom:20px;
-  padding:15px;
   background:rgba(0,0,0,0.2);
   border-radius:15px;
-  box-shadow:0 0 15px rgba(0,255,255,0.2);
-  transition:0.3s;
+  padding:15px;
+  box-shadow:0 0 20px rgba(0,255,255,0.3);
+  transition:.3s;
+  transform:translateY(0);
 }
 .api-section:hover{
-  box-shadow:0 0 25px rgba(0,255,255,0.4);
+  box-shadow:0 0 30px rgba(0,255,255,0.5);
+  transform:translateY(-5px) scale(1.02);
 }
-.api-section h2{color:#00ffff;margin-bottom:10px;}
+.api-section h2{color:#00ffff;margin-bottom:10px;text-align:center;}
 .api-section input{
-  width:60%;
+  width:100%;
   padding:10px;
   margin:5px 0;
   border-radius:10px;
@@ -54,11 +63,15 @@ h1{
   background:rgba(255,255,255,0.9);
   color:#000;
   box-shadow:0 0 8px rgba(0,255,255,0.3) inset;
+  transition:.3s;
+}
+.api-section input:focus{
+  box-shadow:0 0 12px rgba(0,255,255,0.7) inset;
 }
 .api-section button{
-  width:35%;
+  width:100%;
   padding:10px;
-  margin-left:5px;
+  margin-top:5px;
   border-radius:10px;
   border:none;
   font-size:16px;
@@ -75,35 +88,216 @@ h1{
   box-shadow:0 6px 20px rgba(0,255,255,0.7);
 }
 .result-box{
-  background:rgba(0,0,0,0.4);
-  padding:15px;
-  border-radius:15px;
-  min-height:300px;
+  display:grid;
+  grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
+  gap:15px;
+  margin-top:20px;
   max-height:700px;
   overflow-y:auto;
-  box-shadow:0 0 25px rgba(0,255,255,0.3);
 }
 .card{
   background:rgba(0,0,0,0.6);
   padding:12px 15px;
   border-radius:12px;
-  margin-top:10px;
-  animation:fadeSlide 0.6s ease;
   box-shadow:0 0 20px rgba(0,255,255,0.4),0 0 10px rgba(0,255,255,0.2) inset;
+  opacity:0;
+  transform:translateY(20px);
+  animation:cardFade 0.6s forwards;
 }
 .card h3{margin-bottom:5px;color:#00ffff;text-shadow:0 0 10px #00ffff;}
 .card p{margin:2px 0;color:#00ff99;word-break:break-word;}
 img{max-width:100%;border-radius:15px;margin-top:8px;box-shadow:0 0 15px rgba(0,255,255,0.4);}
-@keyframes fadeSlide{from{opacity:0;transform:translateY(-15px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes cardFade{to{opacity:1;transform:translateY(0);}}
 .audio{display:none;}
 .footer{margin-top:20px;text-align:center;opacity:.8;font-size:13px;}
 </style>
 </head>
 <body>
-
 <div class="container">
 <h1>🎯 FF API Panel</h1>
+<div class="grid">
 
+<div class="api-section">
+<h2>❤️ Like API</h2>
+<input type="text" id="like_uid" placeholder="أدخل UID">
+<button onclick="sendAPI('like')">إرسال</button>
+</div>
+
+<div class="api-section">
+<h2>🧠 Info API</h2>
+<input type="text" id="info_uid" placeholder="أدخل UID">
+<button onclick="sendAPI('info')">إرسال</button>
+</div>
+
+<div class="api-section">
+<h2>📜 Bio API</h2>
+<input type="text" id="bio_token" placeholder="أدخل Access Token">
+<button onclick="sendAPI('bio')">إرسال</button>
+</div>
+
+<div class="api-section">
+<h2>🧢 Outfit API</h2>
+<input type="text" id="outfit_uid" placeholder="أدخل UID">
+<button onclick="sendAPI('outfit')">إرسال</button>
+</div>
+
+<div class="api-section">
+<h2>🚫 BNR API</h2>
+<input type="text" id="bnr_uid" placeholder="أدخل UID">
+<button onclick="sendAPI('bnr')">إرسال</button>
+</div>
+
+<div class="api-section">
+<h2>🔒 Ban Check API</h2>
+<input type="text" id="ban_uid" placeholder="أدخل UID">
+<button onclick="sendAPI('ban')">إرسال</button>
+</div>
+
+<div class="api-section">
+<h2>💃 Dance API</h2>
+<input type="text" id="dance_team" placeholder="أدخل Team Code">
+<input type="text" id="dance_id" placeholder="أدخل ID الرقصة">
+<button onclick="sendAPI('dance')">إرسال</button>
+</div>
+
+<div class="api-section">
+<h2>🎉 Event API</h2>
+<input type="text" id="event_server" placeholder="أدخل Server">
+<button onclick="sendAPI('event')">إرسال</button>
+</div>
+
+</div>
+<div class="result-box" id="resultBox"></div>
+<audio id="sendSound" class="audio" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+<div class="footer">Developed by Rayen YT © 2025</div>
+</div>
+
+<script>
+const APIs={
+  like:   "https://ff.mlbbai.com/like/",
+  info:   "https://x7m-xinfo.vercel.app/xInFo",
+  bio:    "https://s1x-amin-bio.vercel.app/get",
+  outfit: "https://lonely-outfit-7ffo.vercel.app/outfit",
+  bnr:    "http://212.227.65.132:13521/bnr?uid={uid}&key=AlliFF_BOT_V1",
+  ban:    "https://s1x-amin-check.vercel.app/check",
+  dance:  "https://ctx-team-1-production.up.railway.app/api/dance",
+  event:  "https://testing-site-self.vercel.app/events"
+};
+const PROXY="https://api.allorigins.win/get?url=";
+
+function addResult(content,isHTML=false){
+  const box=document.getElementById('resultBox');
+  const div=document.createElement('div');
+  div.className="card";
+  if(isHTML){div.innerHTML=content;}else{div.textContent=content;}
+  box.appendChild(div);
+  box.scrollTop=box.scrollHeight;
+  // Animation sound effect
+  const audio=new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
+  audio.play();
+}
+
+async function sendAPI(type){
+  const sound=document.getElementById('sendSound'); sound.play();
+  let uid="",url="",isImage=false;
+  try{
+    switch(type){
+      case 'like': uid=document.getElementById('like_uid').value.trim(); url=APIs.like+"?uid="+uid; break;
+      case 'info': uid=document.getElementById('info_uid').value.trim(); url=APIs.info+"?uid="+uid; break;
+      case 'bio':
+        uid=document.getElementById('bio_token').value.trim();
+        if(!uid){ addResult("⚠️ الرجاء إدخال Access Token"); return; }
+        url=APIs.bio+"?access_token="+encodeURIComponent(uid);
+        break;
+      case 'outfit': uid=document.getElementById('outfit_uid').value.trim(); url=APIs.outfit+"?uid="+uid; isImage=true; break;
+      case 'bnr': uid=document.getElementById('bnr_uid').value.trim(); url=APIs.bnr.replace('{uid}',uid); isImage=true; break;
+      case 'ban': uid=document.getElementById('ban_uid').value.trim(); url=APIs.ban+"?uid="+uid; break;
+      case 'dance': 
+        const team=document.getElementById('dance_team').value.trim();
+        const danceid=document.getElementById('dance_id').value.trim();
+        if(!team || !danceid){ addResult("⚠️ الرجاء إدخال Team Code و Dance ID"); return; }
+        url=APIs.dance+"?teamcode="+team+"&danceid="+danceid; break;
+      case 'event': uid=document.getElementById('event_server').value.trim(); url=APIs.event+"?server="+uid; isImage=true; break;
+    }
+
+    if(!uid && type!=='dance' && type!=='event'){ addResult("⚠️ الرجاء إدخال البيانات المطلوبة"); return; }
+
+    addResult(`🔹 طلب API: ${type} | المدخل: ${uid||document.getElementById('dance_team').value.trim()+'/'+document.getElementById('dance_id').value.trim()}`);
+
+    if(isImage){
+      const res=await fetch(url);
+      if(!res.ok) throw new Error("فشل تحميل الصورة");
+      const blob=await res.blob();
+      const imgURL=URL.createObjectURL(blob);
+      addResult(`<img src="${imgURL}">`,true);
+      return;
+    }
+
+    const res=await fetch(PROXY + encodeURIComponent(url));
+    if(!res.ok) throw new Error("فشل الاتصال بالـ API");
+    const dataRaw=await res.json();
+    const parsed=dataRaw.contents?JSON.parse(dataRaw.contents):dataRaw;
+
+    let cardHTML="";
+    switch(type){
+      case 'info':
+        const info=parsed;
+        cardHTML=`<h3>✨ معلومات اللاعب: ${info.NiCkNaMe||'N/A'} ✨</h3>
+<p>🆔 UID: ${info['AcC ID']||'N/A'}</p>
+<p>📛 الاسم: ${info.NiCkNaMe||'N/A'}</p>
+<p>🌍 السيرفر: ${info.SeRvEr||'N/A'}</p>
+<p>🏅 اللفل: ${info.LeVeL||'N/A'}</p>
+<p>❤️ اللايكات: ${info.LikEs||'N/A'}</p>
+<p>EXP: ${info.ExP||'N/A'}</p>
+<p>✍️ البايو: ${info.Bio||'N/A'}</p>
+<p>🛡️ عدد الشارات: ${info['BaDgE CouNt']||'N/A'}</p>
+<p>⚔️ رانك الباتل رويال: ${info.AccountRankingPoints||'N/A'}</p>
+<p>💥 رانك الكلاش سكواد: ${info['CS RaNk PoiNtS']||'N/A'}</p>
+<p>⏰ آخر تسجيل دخول: ${info.LastLogin||'N/A'}</p>
+<p>🎟️ لديه ElitePass: ${info.HasElitePass?'نعم':'لا'}</p>`;
+        break;
+
+      case 'like':
+        const d=parsed;
+        if(d.message && d.message.includes("حدث خطأ")) cardHTML=`❌ فشل إرسال اللايكات ❌<p>🆔 UID: ${uid}</p><p>💬 السبب: ${d.message}</p>`;
+        else cardHTML=`✅ تم إرسال اللايكات بنجاح ✅
+<p>🆔 UID: ${d.UID||uid}</p>
+<p>📛 الاسم: ${d.PlayerNickname||'N/A'}</p>
+<p>❤️ اللايكات قبل: ${d.LikesbeforeCommand||'N/A'}</p>
+<p>💚 اللايكات بعد: ${d.LikesafterCommand||'N/A'}</p>
+<p>📈 إجمالي اللايكات المرسلة: ${d.LikesGivenByAPI||'N/A'}</p>`;
+        break;
+
+      case 'bio':
+      case 'dance':
+        cardHTML=`<h3>${type.toUpperCase()} API</h3><pre>${JSON.stringify(parsed,null,2)}</pre>`;
+        break;
+
+      case 'ban':
+        const status=parsed.isBanned? "🚫 الحساب محظور":"✅ الحساب غير محظور";
+        cardHTML=`<h3>🔒 فحص الحظر</h3>
+<p>👤 الاسم: ${parsed.name||uid}</p>
+<p>🆔 UID: ${parsed.uid||uid}</p>
+<p>📊 الحالة: ${status}</p>`;
+        break;
+
+      case 'event':
+        if(parsed.images && parsed.images.length>0){
+          parsed.images.forEach(img=>cardHTML+=`<img src="${img}">`);
+        } else {
+          cardHTML=`<pre>${JSON.stringify(parsed,null,2)}</pre>`;
+        }
+        break;
+    }
+    if(cardHTML) addResult(cardHTML,true);
+
+  }catch(e){addResult("❌ حدث خطأ أثناء الاتصال بالـ API: "+e);}
+}
+</script>
+</body>
+</html>
 <!-- API Sections -->
 <div class="api-section">
 <h2>❤️ Like API</h2>
