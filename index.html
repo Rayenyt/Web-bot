@@ -3,27 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FF API Dashboard - Pro Panel</title>
+<title>FF API Pro Panel</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap');
 *{box-sizing:border-box;font-family:'Cairo',sans-serif;direction:rtl;margin:0;padding:0;}
 body{background:linear-gradient(135deg,#020024,#090979,#00d4ff);min-height:100vh;display:flex;justify-content:center;align-items:center;color:#fff;}
-.container{width:90%;max-width:650px;background:rgba(255,255,255,0.1);backdrop-filter:blur(15px);padding:30px;border-radius:20px;box-shadow:0 0 25px rgba(0,0,0,0.3);}
+.container{width:95%;max-width:800px;background:rgba(255,255,255,0.1);backdrop-filter:blur(15px);padding:25px;border-radius:20px;box-shadow:0 0 25px rgba(0,0,0,0.3);}
 h1{text-align:center;color:#00ffff;text-shadow:0 0 15px #00ffff;margin-bottom:20px;}
-select,input,button{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:none;font-size:16px;outline:none;}
-input{background:rgba(255,255,255,0.9);color:#000;}
-select{background:rgba(0,0,0,0.4);color:#fff;}
-button{background:linear-gradient(90deg,#00ffff,#0080ff);color:#000;font-weight:bold;cursor:pointer;transition:.3s;}
-button:hover{transform:scale(1.05);background:linear-gradient(90deg,#00c3ff,#00ffb3);}
-.chat{margin-top:15px;max-height:500px;overflow-y:auto;display:flex;flex-direction:column;}
-.message{padding:10px 15px;border-radius:15px;margin:8px 0;display:inline-block;max-width:85%;animation:fadeIn 0.5s ease;word-break:break-word;}
-.user{background:rgba(0,255,255,0.2);align-self:flex-end;}
-.bot{background:rgba(255,255,255,0.2);align-self:flex-start;}
-.card{background:rgba(0,0,0,0.4);padding:12px 15px;border-radius:12px;margin-top:5px;animation:fadeSlide 0.6s ease;box-shadow:0 0 15px rgba(0,255,255,0.2);}
+.api-section{margin-bottom:20px;padding:15px;background:rgba(0,0,0,0.2);border-radius:15px;}
+.api-section h2{color:#00ffff;margin-bottom:10px;}
+.api-section input{width:70%;padding:10px;margin:5px 0;border-radius:10px;border:none;font-size:16px;outline:none;background:rgba(255,255,255,0.9);color:#000;}
+.api-section button{width:25%;padding:10px;margin-left:5px;border-radius:10px;border:none;font-size:16px;font-weight:bold;cursor:pointer;background:linear-gradient(90deg,#00ffff,#0080ff);color:#000;transition:.3s;}
+.api-section button:hover{transform:scale(1.05);background:linear-gradient(90deg,#00c3ff,#00ffb3);}
+.result-box{background:rgba(0,0,0,0.4);padding:15px;border-radius:15px;min-height:250px;max-height:500px;overflow-y:auto;}
+.card{background:rgba(0,0,0,0.6);padding:12px 15px;border-radius:12px;margin-top:10px;animation:fadeSlide 0.6s ease;box-shadow:0 0 15px rgba(0,255,255,0.2);}
 .card h3{margin-bottom:5px;color:#00ffff;}
-.card p{margin:2px 0;color:#00ff99;}
+.card p{margin:2px 0;color:#00ff99;word-break:break-word;}
 img{max-width:100%;border-radius:15px;margin-top:8px;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 @keyframes fadeSlide{from{opacity:0;transform:translateX(-20px);}to{opacity:1;transform:translateX(0);}}
 .audio{display:none;}
 .footer{margin-top:20px;text-align:center;opacity:.8;font-size:13px;}
@@ -32,28 +28,71 @@ img{max-width:100%;border-radius:15px;margin-top:8px;}
 <body>
 
 <div class="container">
-<h1>🎯 FF API Dashboard</h1>
-<select id="apiType">
-  <option value="like">❤️ Like API</option>
-  <option value="info">🧠 Info API</option>
-  <option value="bio">📜 Bio API</option>
-  <option value="outfit">🧢 Outfit API</option>
-  <option value="bnr">🚫 BNR API</option>
-  <option value="ban">🔒 Ban API</option>
-  <option value="dance">💃 Dance API</option>
-  <option value="event">🎉 Event API</option>
-</select>
-<input type="text" id="uid" placeholder="أدخل UID أو البيانات المطلوبة">
-<button onclick="sendRequest()">🚀 إرسال الطلب</button>
+<h1>🎯 FF API Pro Panel</h1>
 
-<div class="chat" id="chat"></div>
-<audio id="sendSound" class="audio" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
-
-<div class="footer">Developed by Rayen YT © 2025</div>
+<!-- Like API -->
+<div class="api-section">
+<h2>❤️ Like API</h2>
+<input type="text" id="like_uid" placeholder="أدخل UID">
+<button onclick="sendAPI('like')">إرسال</button>
 </div>
 
+<!-- Info API -->
+<div class="api-section">
+<h2>🧠 Info API</h2>
+<input type="text" id="info_uid" placeholder="أدخل UID">
+<button onclick="sendAPI('info')">إرسال</button>
+</div>
+
+<!-- Bio API -->
+<div class="api-section">
+<h2>📜 Bio API</h2>
+<input type="text" id="bio_token" placeholder="أدخل Access Token">
+<button onclick="sendAPI('bio')">إرسال</button>
+</div>
+
+<!-- Outfit API -->
+<div class="api-section">
+<h2>🧢 Outfit API</h2>
+<input type="text" id="outfit_uid" placeholder="أدخل UID">
+<button onclick="sendAPI('outfit')">إرسال</button>
+</div>
+
+<!-- BNR API -->
+<div class="api-section">
+<h2>🚫 BNR API</h2>
+<input type="text" id="bnr_uid" placeholder="أدخل UID">
+<button onclick="sendAPI('bnr')">إرسال</button>
+</div>
+
+<!-- Ban Check API -->
+<div class="api-section">
+<h2>🔒 Ban Check API</h2>
+<input type="text" id="ban_uid" placeholder="أدخل UID">
+<button onclick="sendAPI('ban')">إرسال</button>
+</div>
+
+<!-- Dance API -->
+<div class="api-section">
+<h2>💃 Dance API</h2>
+<input type="text" id="dance_team" placeholder="أدخل Team Code">
+<button onclick="sendAPI('dance')">إرسال</button>
+</div>
+
+<!-- Event API -->
+<div class="api-section">
+<h2>🎉 Event API</h2>
+<input type="text" id="event_server" placeholder="أدخل Server">
+<button onclick="sendAPI('event')">إرسال</button>
+</div>
+
+<!-- Result Box -->
+<div class="result-box" id="resultBox"></div>
+<audio id="sendSound" class="audio" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+<div class="footer">Developed by Rayen YT © 2025</div>
+
 <script>
-const APIs = {
+const APIs={
   like:   "https://ff.mlbbai.com/like/",
   info:   "https://x7m-xinfo.vercel.app/xInFo",
   bio:    "https://s1x-amin-bio.vercel.app/get",
@@ -63,308 +102,91 @@ const APIs = {
   dance:  "https://ctx-team-1-production.up.railway.app/api/dance",
   event:  "https://testing-site-self.vercel.app/events"
 };
-const PROXY = "https://api.allorigins.win/get?url=";
+const PROXY="https://api.allorigins.win/get?url=";
 
-function addMessage(content,sender='bot',isHTML=false){
-  const chat=document.getElementById('chat');
-  const msg=document.createElement('div');
-  msg.className='message '+sender;
-  if(isHTML){msg.innerHTML=content;}else{msg.textContent=content;}
-  chat.appendChild(msg);
-  chat.scrollTop=chat.scrollHeight;
+function addResult(content,isHTML=false){
+  const box=document.getElementById('resultBox');
+  const div=document.createElement('div');
+  if(isHTML){div.innerHTML=content;}else{div.textContent=content;}
+  box.appendChild(div);
+  box.scrollTop=box.scrollHeight;
 }
 
 function createCard(title,data){
   let html=`<div class="card"><h3>${title}</h3>`;
-  for(const key in data){
-    html+=`<p><b>${key}:</b> ${data[key]}</p>`;
-  }
+  for(const key in data){html+=`<p><b>${key}:</b> ${data[key]}</p>`;}
   html+='</div>';
   return html;
 }
 
-async function sendRequest(){
-  const type=document.getElementById('apiType').value;
-  const uid=document.getElementById('uid').value.trim();
-  const sound=document.getElementById('sendSound');
-  if(!uid && type!=='event'){addMessage('⚠️ الرجاء إدخال UID أو البيانات المطلوبة','bot');return;}
-  addMessage(uid,'user');sound.play();
-
-  let url=APIs[type];
-  if(url.includes('{uid}')) url=url.replace('{uid}',uid);
-  if(type==='like') url += '?uid='+uid;
-  if(type==='dance') url += '?teamcode='+uid;
-  if(type==='bio') url += '?access_token='+uid;
-  if(type==='info'||type==='ban') url += '?uid='+uid;
-
-  const isImageResponse=['bnr','outfit','event'].includes(type);
-
+async function sendAPI(type){
+  const sound=document.getElementById('sendSound'); sound.play();
+  let uid="",url="",isImage=false;
+  switch(type){
+    case 'like': uid=document.getElementById('like_uid').value.trim(); url=APIs.like+"?uid="+uid; break;
+    case 'info': uid=document.getElementById('info_uid').value.trim(); url=APIs.info+"?uid="+uid; break;
+    case 'bio': uid=document.getElementById('bio_token').value.trim(); url=APIs.bio+"?access_token="+uid; break;
+    case 'outfit': uid=document.getElementById('outfit_uid').value.trim(); url=APIs.outfit+"?uid="+uid; isImage=true; break;
+    case 'bnr': uid=document.getElementById('bnr_uid').value.trim(); url=APIs.bnr.replace('{uid}',uid); isImage=true; break;
+    case 'ban': uid=document.getElementById('ban_uid').value.trim(); url=APIs.ban+"?uid="+uid; break;
+    case 'dance': uid=document.getElementById('dance_team').value.trim(); url=APIs.dance+"?teamcode="+uid; break;
+    case 'event': uid=document.getElementById('event_server').value.trim(); url=APIs.event+"?server="+uid; isImage=true; break;
+  }
+  if(!uid && type!=='event'){addResult("⚠️ الرجاء إدخال البيانات المطلوبة"); return;}
+  addResult(`🔹 طلب API: ${type} | المدخل: ${uid}`);
   try{
-    if(isImageResponse){
+    if(isImage){
       const res=await fetch(url);
       const blob=await res.blob();
       const imgURL=URL.createObjectURL(blob);
-      addMessage('<img src="'+imgURL+'">','bot',true);
+      addResult(`<img src="${imgURL}">`,true);
       return;
     }
     const res=await fetch(PROXY + encodeURIComponent(url));
     const data=await res.json();
     const parsed=data.contents?JSON.parse(data.contents):data;
-    const card=createCard(type.toUpperCase(),parsed);
-    addMessage(card,'bot',true);
-  }catch(e){
-    addMessage('❌ خطأ في الاتصال: '+e.message,'bot');
-  }
-}
-</script>
-
-</body>
-</html>  text-align: center;
-}
-</style>
-</head>
-<body>
-
-  <div class="container">
-    <h1>🎯 Free Fire API Dashboard</h1>
-
-    <select id="apiType">
-      <option value="like">❤️ Like API</option>
-      <option value="info">🧠 Info API</option>
-      <option value="bio">📜 Bio API</option>
-      <option value="outfit">🧢 Outfit API</option>
-      <option value="bnr">🚫 BNR API</option>
-      <option value="ban">🔒 Ban API</option>
-      <option value="dance">💃 Dance API</option>
-      <option value="event">🎉 Event API</option>
-    </select>
-
-    <input type="text" id="uid" placeholder="أدخل UID اللاعب">
-    <button onclick="sendRequest()">🚀 إرسال الطلب</button>
-
-    <div class="result" id="output">⚡ في انتظار البيانات...</div>
-  </div>
-
-  <div class="footer">Developed by Rayen YT © 2025</div>
-
-<script>
-const APIs = {
-  like:   "https://ff.mlbbai.com/like/",
-  info:   "https://x7m-xinfo.vercel.app/xInFo",
-  bio:    "https://s1x-amin-bio.vercel.app/get",
-  outfit: "https://lonely-outfit-7ffo.vercel.app/outfit",
-  bnr:    "http://212.227.65.132:13521/bnr?uid={uid}&key=AlliFF_BOT_V1",
-  ban:    "https://s1x-amin-check.vercel.app/check",
-  dance:  "https://ctx-team-1-production.up.railway.app/api/dance",
-  event:  "https://testing-site-self.vercel.app/events"
-};
-
-const PROXY = "https://api.allorigins.win/get?url=";
-
-async function sendRequest() {
-  const type = document.getElementById("apiType").value;
-  const uid = document.getElementById("uid").value.trim();
-  const output = document.getElementById("output");
-  output.textContent = "🔄 جاري الاتصال...";
-
-  if (!uid && type !== "event") {
-    output.textContent = "⚠️ يرجى إدخال UID أولاً.";
-    return;
-  }
-
-  let url = APIs[type];
-  if (url.includes("{uid}")) url = url.replace("{uid}", uid);
-
-  // تعديل حسب نوع API
-  if (type === "like") url += "?uid=" + uid;
-  if (type === "dance") url += "?teamcode=" + uid;
-  if (type === "bio") url += "?access_token=" + uid;
-  if (type === "info" || type === "ban") url += "?uid=" + uid;
-
-  const isImageResponse = ["bnr", "outfit", "event"].includes(type);
-  try {
-    if (isImageResponse) {
-      const res = await fetch(url);
-      const blob = await res.blob();
-      const imgURL = URL.createObjectURL(blob);
-      output.innerHTML = `<img src="${imgURL}" style="max-width:100%;border-radius:15px;">`;
-      return;
+    
+    // تنسيق الردود لكل API
+    let cardHTML="";
+    if(type==='info'){
+      const info=parsed;
+      cardHTML=`<div class="card"><h3>✨ معلومات اللاعب: ${info.NiCkNaMe||'N/A'} ✨</h3>
+<p>🆔 الآيدي: ${info['AcC ID']||'N/A'}</p>
+<p>📛 الاسم: ${info.NiCkNaMe||'N/A'}</p>
+<p>🌍 السيرفر: ${info.SeRvEr||'N/A'}</p>
+<p>🏅 اللفل: ${info.LeVeL||'N/A'}</p>
+<p>❤️ اللايكات: ${info.LikEs||'N/A'}</p>
+<p>EXP: ${info.ExP||'N/A'}</p>
+<p>✍️ البايو: ${info.Bio||'N/A'}</p>
+<p>🛡️ عدد الشارات: ${info['BaDgE CouNt']||'N/A'}</p>
+<p>⚔️ رانك الباتل رويال: ${info.AccountRankingPoints||'N/A'}</p>
+<p>💥 رانك الكلاش سكواد: ${info['CS RaNk PoiNtS']||'N/A'}</p>
+<p>⏰ آخر تسجيل دخول: ${info.LastLogin||'N/A'}</p>
+<p>🎟️ لديه ElitePass: ${info.HasElitePass?'نعم':'لا'}</p></div>`;
+    } else if(type==='like'){
+      const d=parsed;
+      cardHTML=`<div class="card"><h3>❤️ Like API</h3>
+<p>🆔 UID: ${d.UID||uid}</p>
+<p>📛 الاسم: ${d.PlayerNickname||'N/A'}</p>
+<p>❤️ اللايكات قبل: ${d.LikesbeforeCommand||'N/A'}</p>
+<p>💚 اللايكات بعد: ${d.LikesafterCommand||'N/A'}</p>
+<p>📈 إجمالي اللايكات المرسلة: ${d.LikesGivenByAPI||'N/A'}</p>
+<p>✅ الطلبات الناجحة: ${d.successful||'N/A'}</p>
+<p>👎 الطلبات الفاشلة: ${d.client_errors+d.server_errors||0}</p></div>`;
+    } else if(type==='ban'){
+      const b=parsed;
+      const status=b.isBanned?'🚫 الحساب محظور':'✅ الحساب غير محظور';
+      cardHTML=`<div class="card"><h3>🔒 فحص حالة الحساب</h3>
+<p>👤 الاسم: ${b.name||'N/A'}</p>
+<p>🆔 UID: ${b.uid||uid}</p>
+<p>📊 الحالة: ${status}</p></div>`;
+    } else {
+      cardHTML=createCard(type.toUpperCase(),parsed);
     }
-
-    const res = await fetch(PROXY + encodeURIComponent(url));
-    const data = await res.json();
-    const parsed = data.contents ? JSON.parse(data.contents) : data;
-
-    output.textContent = JSON.stringify(parsed, null, 2);
-  } catch (e) {
-    output.textContent = "❌ خطأ في الاتصال:\n" + e.message;
-  }
-}
-</script>
-
-</body>
-</html><option value="NA">North America</option>
-</select>
-<button onclick="callAPI('event')">Show Events</button>
-<div id="event_result" class="result"></div>
-</div>
-</div>
-<footer>© 2025 Rayen | Free Fire API Dashboard</footer>
-
-<div id="modal" class="modal">
-<span class="close" onclick="closeModal()">&times;</span>
-<div class="modal-content" id="modal-content"></div>
-</div>
-
-<script>
-const apis={
-info:"https://x7m-xinfo.vercel.app/xInFo?id=",
-like:"https://ff.mlbbai.com/like/",
-bio:"https://s1x-amin-bio.vercel.app/get",
-dance:"https://ctx-team-1-production.up.railway.app/api/dance",
-ban:"https://s1x-amin-check.vercel.app/check?uid=",
-outfit:"https://lonely-outfit-7ffo.vercel.app/outfit?uid=",
-bnr:"http://212.227.65.132:13521/bnr?uid=",
-event:"https://testing-site-self.vercel.app/events"
-};
-
-function openModal(imgUrl){document.getElementById('modal-content').innerHTML=`<img src="${imgUrl}" alt="image">`;document.getElementById('modal').style.display="block";}
-function closeModal(){document.getElementById('modal').style.display="none";}
-
-async function callAPI(type){
-const resultBox=document.getElementById(`${type}_result`);
-resultBox.textContent="⏳ Loading...";
-try{
-let res,data;
-if(type==="bio"){
-const token=document.getElementById("bio_token").value.trim();
-const text=document.getElementById("bio_text").value.trim();
-const people=document.getElementById("bio_people").value.trim();
-const form=new FormData();
-form.append("access_token",token);
-form.append("bio_text",text);
-form.append("bio_people",people);
-res=await fetch(apis.bio,{method:"POST",body:form});
-data=await res.json();
-resultBox.textContent=JSON.stringify(data,null,2);
-}else if(type==="dance"){
-const team=document.getElementById("dance_team").value.trim();
-const ids=document.getElementById("dance_ids").value.trim();
-const form=new FormData();
-form.append("team_code",team);
-form.append("dance_ids",ids);
-res=await fetch(apis.dance,{method:"POST",body:form});
-data=await res.json();
-resultBox.textContent=JSON.stringify(data,null,2);
-}else if(type==="event"){
-const server=document.getElementById("event_server").value;
-res=await fetch(`${apis.event}?server=${server}`);
-const text=await res.text();
-const urls=[...text.matchAll(/https?:\/\/[^\s"']+\.(?:jpg|png|jpeg|gif)/g)].map(m=>m[0]);
-if(urls.length){resultBox.innerHTML='<div class="gallery">'+urls.map(u=>`<img src="${u}" onclick="openModal(\'${u}\')" />`).join('')+'</div>';}
-else{resultBox.textContent="⚠️ No event images found for "+server;}
-}else if(type==="outfit"||type==="bnr"){
-const input=document.getElementById(`${type}_uid`).value.trim();
-res=await fetch(apis[type]+input);
-const imgUrl=await res.text();
-resultBox.innerHTML=`<img src="${imgUrl}" style="width:100%;border-radius:10px;" onclick="openModal('${imgUrl}')"/>`;
-}else{
-const input=document.getElementById(`${type}_id`)||document.getElementById(`${type}_uid`);
-const value=input?input.value.trim():"";
-res=await fetch(apis[type]+value);
-data=await res.json();
-resultBox.textContent=JSON.stringify(data,null,2);
-}
-}catch(err){resultBox.textContent="❌ Error: "+err.message;}
+    addResult(cardHTML,true);
+  }catch(e){addResult('❌ خطأ في الاتصال: '+e.message);}
 }
 </script>
 
 </body>
 </html>
-    <!-- EVENT -->
-    <div class="api-card">
-        <h2>🎉 Events by Server</h2>
-        <select id="event_server">
-            <option value="ME">MENA</option>
-            <option value="EU">EU</option>
-            <option value="ASIA">ASIA</option>
-            <option value="BR">Brazil</option>
-            <option value="NA">North America</option>
-        </select>
-        <button onclick="callAPI('event')">Show Events</button>
-        <div id="event_result" class="result"></div>
-    </div>
-</div>
-
-<footer>© 2025 Rayen | Free Fire API Dashboard</footer>
-
-<div id="modal" class="modal">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <div class="modal-content" id="modal-content"></div>
-</div>
-
-<script>
-const apis = {
-    info: "https://x7m-xinfo.vercel.app/xInFo?id=",
-    like: "https://ff.mlbbai.com/like/",
-    bio: "https://s1x-amin-bio.vercel.app/get",
-    dance: "https://ctx-team-1-production.up.railway.app/api/dance",
-    ban: "https://s1x-amin-check.vercel.app/check?uid=",
-    outfit: "https://lonely-outfit-7ffo.vercel.app/outfit?uid=",
-    bnr: "http://212.227.65.132:13521/bnr?uid=",
-    event: "https://testing-site-self.vercel.app/events"
-};
-
-function openModal(imgUrl){document.getElementById('modal-content').innerHTML=`<img src="${imgUrl}" alt="image">`;document.getElementById('modal').style.display="block";}
-function closeModal(){document.getElementById('modal').style.display="none";}
-
-async function callAPI(type){
-    const resultBox=document.getElementById(`${type}_result`);
-    resultBox.textContent="⏳ Loading...";
-    try{
-        let res;
-        if(type==="bio"){
-            const token=document.getElementById("bio_token").value.trim();
-            const text=document.getElementById("bio_text").value.trim();
-            const people=document.getElementById("bio_people").value.trim();
-            const form=new FormData();
-            form.append("access_token",token);
-            form.append("bio_text",text);
-            form.append("bio_people",people);
-            res=await fetch(apis.bio,{method:"POST",body:form});
-            const data=await res.json();
-            resultBox.textContent=JSON.stringify(data,null,2);
-        }else if(type==="dance"){
-            const team=document.getElementById("dance_team").value.trim();
-            const ids=document.getElementById("dance_ids").value.trim();
-            const form=new FormData();
-            form.append("team_code",team);
-            form.append("dance_ids",ids);
-            res=await fetch(apis.dance,{method:"POST",body:form});
-            const data=await res.json();
-            resultBox.textContent=JSON.stringify(data,null,2);
-        }else if(type==="event"){
-            const server=document.getElementById("event_server").value;
-            res=await fetch(`${apis.event}?server=${server}`);
-            const text=await res.text();
-            const urls=[...text.matchAll(/https?:\/\/[^\s"']+\.(?:jpg|png|jpeg|gif)/g)].map(m=>m[0]);
-            if(urls.length){resultBox.innerHTML='<div class="gallery">'+urls.map(u=>`<img src="${u}" onclick="openModal(\'${u}\')" />`).join('')+'</div>';}
-            else{resultBox.textContent="⚠️ No event images found for "+server;}
-        }else if(type==="outfit"||type==="bnr"){
-            const input=document.getElementById(`${type}_uid`).value.trim();
-            res=await fetch(apis[type]+input);
-            const imgUrl=await res.text();
-            resultBox.innerHTML=`<img src="${imgUrl}" style="width:100%;border-radius:10px;" onclick="openModal('${imgUrl}')"/>`;
-        }else{
-            const input=document.getElementById(`${type}_id`)||document.getElementById(`${type}_uid`);
-            const value=input?input.value.trim():"";
-            res=await fetch(apis[type]+value);
-            const data=await res.json();
-            resultBox.textContent=JSON.stringify(data,null,2);
-        }
-    }catch(err){resultBox.textContent="❌ Error: "+err.message;}
-}
-</script>
-
-</body>
-    </html>
