@@ -3,107 +3,191 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free Fire API Dashboard - Rayen</title>
+<title>Free Fire API Dashboard</title>
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif}
-body{background:radial-gradient(circle at 20% 20%,#0f0f1a,#000);color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-x:hidden;}
-header{width:100%;text-align:center;padding:25px;background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);box-shadow:0 0 15px rgba(0,0,0,0.5);}
-header h1{font-size:2em;color:#00eaff;text-shadow:0 0 15px #00eaff;letter-spacing:2px;animation:neonPulse 2s infinite;}
-@keyframes neonPulse{0%,100%{text-shadow:0 0 5px #00eaff,0 0 20px #00eaff,0 0 30px #00eaff}50%{text-shadow:0 0 10px #00ffcc,0 0 25px #00ffcc,0 0 40px #00ffcc}}
-.container{display:flex;flex-wrap:wrap;justify-content:center;gap:25px;padding:40px;max-width:1200px;}
-.api-card{width:320px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:20px;box-shadow:0 0 10px rgba(0,255,255,0.3);transition:0.3s ease-in-out;overflow:hidden;position:relative;}
-.api-card:hover{transform:scale(1.05);box-shadow:0 0 25px #00eaff,0 0 50px #00ffcc;}
-.api-card h2{color:#00eaff;margin-bottom:15px;text-align:center;text-shadow:0 0 5px #00eaff;}
-.api-card input,.api-card select{width:100%;padding:8px 10px;margin-bottom:10px;border-radius:8px;border:none;outline:none;background:rgba(0,0,0,0.4);color:#fff;font-size:0.9em;}
-.api-card button{width:100%;padding:10px;background:#00eaff;border:none;color:#000;border-radius:8px;font-weight:bold;cursor:pointer;transition:0.3s;box-shadow:0 0 5px #00eaff;}
-.api-card button:hover{background:#00ffcc;transform:scale(1.05);box-shadow:0 0 15px #00ffcc;}
-.result{margin-top:15px;background:rgba(0,0,0,0.3);padding:10px;border-radius:10px;font-size:0.85em;max-height:200px;overflow-y:auto;white-space:pre-wrap;box-shadow:0 0 10px #00eaff inset;}
-footer{text-align:center;padding:20px;font-size:0.9em;color:#aaa;}
-@keyframes move-bg{0%{background-position:0 0}100%{background-position:400% 0}}
-body::before{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(270deg,#00eaff,#ff00ff,#00ffcc,#0066ff);background-size:400% 400%;z-index:-1;opacity:.05;animation:move-bg 15s linear infinite;}
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;margin-top:10px;}
-.gallery img{width:100%;border-radius:10px;transition:transform 0.3s, box-shadow 0.3s;cursor:pointer;}
-.gallery img:hover{transform:scale(1.1);box-shadow:0 0 20px #00eaff;}
-.modal{display:none;position:fixed;z-index:999;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.9);}
-.modal-content{margin:10% auto;padding:20px;width:90%;max-width:700px;background:rgba(0,0,0,0.95);border-radius:15px;}
-.modal-content img{width:100%;border-radius:15px;}
-.close{color:#fff;float:right;font-size:28px;font-weight:bold;cursor:pointer;}
-.close:hover{color:#00eaff;}
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  font-family: 'Cairo', sans-serif;
+  direction: rtl;
+}
+
+body {
+  background: linear-gradient(135deg, #020024, #090979, #00d4ff);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin: 0;
+}
+
+.container {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(15px);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.3);
+  width: 90%;
+  max-width: 550px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(30px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+h1 {
+  text-align: center;
+  color: #00ffff;
+  text-shadow: 0 0 15px #00ffff;
+  margin-bottom: 25px;
+}
+
+select, input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  outline: none;
+}
+
+input {
+  background: rgba(255,255,255,0.9);
+  color: #000;
+}
+
+select {
+  background: rgba(0,0,0,0.4);
+  color: #fff;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: linear-gradient(90deg, #00ffff, #0080ff);
+  color: #000;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 16px;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #00c3ff, #00ffb3);
+}
+
+.result {
+  background: rgba(0,0,0,0.4);
+  border-radius: 15px;
+  padding: 20px;
+  margin-top: 15px;
+  white-space: pre-wrap;
+  font-size: 14px;
+  line-height: 1.6;
+  max-height: 400px;
+  overflow-y: auto;
+  color: #00ffcc;
+}
+
+.footer {
+  margin-top: 20px;
+  opacity: 0.8;
+  font-size: 13px;
+  text-align: center;
+}
 </style>
 </head>
 <body>
-<header>
-<h1>Free Fire API Dashboard ⚡</h1>
-</header>
-<div class="container">
-<!-- INFO -->
-<div class="api-card">
-<h2>🔍 Player Info</h2>
-<input id="info_id" placeholder="Enter Player ID">
-<button onclick="callAPI('info')">Get Info</button>
-<div id="info_result" class="result"></div>
-</div>
 
-<!-- LIKE -->
-<div class="api-card">
-<h2>❤️ Likes</h2>
-<input id="like_id" placeholder="Enter Player ID">
-<button onclick="callAPI('like')">Get Likes</button>
-<div id="like_result" class="result"></div>
-</div>
+  <div class="container">
+    <h1>🎯 Free Fire API Dashboard</h1>
 
-<!-- BIO -->
-<div class="api-card">
-<h2>🧬 Bio Update</h2>
-<input id="bio_token" placeholder="Access Token">
-<input id="bio_text" placeholder="Bio Text">
-<input id="bio_people" placeholder="People (comma separated)">
-<button onclick="callAPI('bio')">Send Bio</button>
-<div id="bio_result" class="result"></div>
-</div>
+    <select id="apiType">
+      <option value="like">❤️ Like API</option>
+      <option value="info">🧠 Info API</option>
+      <option value="bio">📜 Bio API</option>
+      <option value="outfit">🧢 Outfit API</option>
+      <option value="bnr">🚫 BNR API</option>
+      <option value="ban">🔒 Ban API</option>
+      <option value="dance">💃 Dance API</option>
+      <option value="event">🎉 Event API</option>
+    </select>
 
-<!-- DANCE -->
-<div class="api-card">
-<h2>💃 Dance Action</h2>
-<input id="dance_team" placeholder="Team Code">
-<input id="dance_ids" placeholder="Dance IDs (comma separated)">
-<button onclick="callAPI('dance')">Perform Dances</button>
-<div id="dance_result" class="result"></div>
-</div>
+    <input type="text" id="uid" placeholder="أدخل UID اللاعب">
+    <button onclick="sendRequest()">🚀 إرسال الطلب</button>
 
-<!-- BAN -->
-<div class="api-card">
-<h2>🚫 Ban Check</h2>
-<input id="ban_uid" placeholder="Enter Player UID">
-<button onclick="callAPI('ban')">Check Ban</button>
-<div id="ban_result" class="result"></div>
-</div>
+    <div class="result" id="output">⚡ في انتظار البيانات...</div>
+  </div>
 
-<!-- OUTFIT -->
-<div class="api-card">
-<h2>👕 Outfit</h2>
-<input id="outfit_uid" placeholder="Enter Player UID">
-<button onclick="callAPI('outfit')">Show Outfit</button>
-<div id="outfit_result" class="result"></div>
-</div>
+  <div class="footer">Developed by Rayen YT © 2025</div>
 
-<!-- BNR -->
-<div class="api-card">
-<h2>🎖️ Banner (BNR)</h2>
-<input id="bnr_uid" placeholder="Enter Player UID">
-<button onclick="callAPI('bnr')">Show Banner</button>
-<div id="bnr_result" class="result"></div>
-</div>
+<script>
+const APIs = {
+  like:   "https://ff.mlbbai.com/like/",
+  info:   "https://x7m-xinfo.vercel.app/xInFo",
+  bio:    "https://s1x-amin-bio.vercel.app/get",
+  outfit: "https://lonely-outfit-7ffo.vercel.app/outfit",
+  bnr:    "http://212.227.65.132:13521/bnr?uid={uid}&key=AlliFF_BOT_V1",
+  ban:    "https://s1x-amin-check.vercel.app/check",
+  dance:  "https://ctx-team-1-production.up.railway.app/api/dance",
+  event:  "https://testing-site-self.vercel.app/events"
+};
 
-<!-- EVENT -->
-<div class="api-card">
-<h2>🎉 Events by Server</h2>
-<select id="event_server">
-<option value="ME">MENA</option>
-<option value="EU">EU</option>
-<option value="ASIA">ASIA</option>
-<option value="BR">Brazil</option>
-<option value="NA">North America</option>
+const PROXY = "https://api.allorigins.win/get?url=";
+
+async function sendRequest() {
+  const type = document.getElementById("apiType").value;
+  const uid = document.getElementById("uid").value.trim();
+  const output = document.getElementById("output");
+  output.textContent = "🔄 جاري الاتصال...";
+
+  if (!uid && type !== "event") {
+    output.textContent = "⚠️ يرجى إدخال UID أولاً.";
+    return;
+  }
+
+  let url = APIs[type];
+  if (url.includes("{uid}")) url = url.replace("{uid}", uid);
+
+  // تعديل حسب نوع API
+  if (type === "like") url += "?uid=" + uid;
+  if (type === "dance") url += "?teamcode=" + uid;
+  if (type === "bio") url += "?access_token=" + uid;
+  if (type === "info" || type === "ban") url += "?uid=" + uid;
+
+  const isImageResponse = ["bnr", "outfit", "event"].includes(type);
+  try {
+    if (isImageResponse) {
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const imgURL = URL.createObjectURL(blob);
+      output.innerHTML = `<img src="${imgURL}" style="max-width:100%;border-radius:15px;">`;
+      return;
+    }
+
+    const res = await fetch(PROXY + encodeURIComponent(url));
+    const data = await res.json();
+    const parsed = data.contents ? JSON.parse(data.contents) : data;
+
+    output.textContent = JSON.stringify(parsed, null, 2);
+  } catch (e) {
+    output.textContent = "❌ خطأ في الاتصال:\n" + e.message;
+  }
+}
+</script>
+
+</body>
+</html><option value="NA">North America</option>
 </select>
 <button onclick="callAPI('event')">Show Events</button>
 <div id="event_result" class="result"></div>
